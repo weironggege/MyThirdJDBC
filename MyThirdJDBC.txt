@@ -1,0 +1,54 @@
+1. PreparedStatement: 是Statement的子接口， 可以传入带占位符的SQL语句， 并且提供了补充站位符的方法
+
+1). 使用PreparedStatement, 创建PreparedStatement
+    String sql = "insert into student values(?, ?, ?)"
+
+    PreparedStatement ps = conn.preparedStatement(sql);
+
+2). 调用PreparedStatement的SetXXX(int index, Object val) 设置站位符的值， index从1开始
+
+3). 执行SQL语句， executeQuery(） 或 executeUpdate(), 执行时不需要传入SQL语句
+
+2. ResultSetMetaData: 是描述ResultSet的元数据对象， 即从中可以获得结果集中有多少列， 列名是什么。。。
+
+1). 得到ResultSetMetaData对象， 使用preparedStatement.getMetaData()方法
+
+2). ResultSetMetaData的方法
+
+	int getColumnCount():SQL语句中包含有哪些列
+
+	String getColumnLable(int column): 获取列的别名， 其中索引从1开始
+
+2. DAO: Date Access Object 数据访问对象
+what: 访问数据信息的类，包含了对数据的CRUD(create, remove, update, delete)操作
+而不包含任何业务相关的信息
+
+why: 实现功能的模块化， 更有利于代码的维护和升级, DAO可以直接被子类继承或直接使用。
+
+how: 使用JDBC编写DAO可能包含的方法。
+
+//INSERT, UPDATE, DELETE操作都可以包含在其中
+void update(String sql, Object ... args);
+
+//查询一条记录，返回对应的对象
+<T> T get(Class<T> clazz, String sql, Object ... args);
+
+//查询多条记录， 返回所对应的对象的集合
+<T> List<T> getForList(Class<T> clazz, String sql, Object ... args)
+
+//返回某条记录的某一个字段的值
+<E> E getForValue(String sql, Object ... args);
+
+3. Java类的属性
+
+1). 在JAVAEE中， java类的属性通过get和set来定义， get或者set方法， 去除get和set后， 后字母小写即为java的属性
+
+2). 而以前叫的那个属性， 即成员变量， 称之为字段
+
+3). 操作java类属性有一个工具包：beanutils
+
+setProperty
+BeanUtils.setProperty(object, "name", "weirong");
+
+getProperty
+Object val = BeanUtils.getProperty(object, "name");
